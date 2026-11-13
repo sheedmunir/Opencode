@@ -1,0 +1,38 @@
+---
+name: graphify
+description: >
+  Turn any codebase into a queryable knowledge graph. Use /graphify to build,
+  query, and navigate the graph instead of reading raw files.
+argument-hint: "[command] [args...]"
+---
+
+# Graphify
+
+When the user types `/graphify`, invoke this skill. Graphify is a CLI tool
+(`graphify`) that builds a local knowledge graph of your project.
+
+## Available commands
+
+| Command | What it does | CLI equivalent |
+|---------|-------------|----------------|
+| `/graphify` | Build knowledge graph on current directory | `graphify .` |
+| `/graphify <folder>` | Build graph on a specific folder | `graphify <folder>` |
+| `/graphify query "question"` | Ask a question against the graph | `graphify query "question"` |
+| `/graphify path "A" "B"` | Find relationship between two concepts | `graphify path "A" "B"` |
+| `/graphify explain "concept"` | Explain a focused concept | `graphify explain "concept"` |
+| `/graphify update` | Incrementally update the graph (AST-only) | `graphify update .` |
+| `/graphify watch` | Auto-sync graph as files change | `graphify . --watch` |
+| `/graphify wiki` | Build agent-crawlable wiki | `graphify . --wiki` |
+
+## Rules
+
+- **Always prefer the graph over raw files.** When `graphify-out/graph.json` exists, run `graphify query` before grepping or reading source files for codebase questions.
+- Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts.
+- Read raw files only for lines the graph or an earlier read already located.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+- Dirty graph files are expected after updates — not a reason to skip graphify.
+- If `graphify-out/wiki/index.md` exists, use it for broad navigation instead of raw source browsing.
+
+## Execution
+
+When the user types `/graphify <args>`, run the corresponding `graphify` CLI command in the project directory and report the results back to the user. Do not ask for confirmation — just run it.
